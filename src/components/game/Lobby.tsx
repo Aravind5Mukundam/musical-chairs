@@ -29,7 +29,7 @@ interface LobbyProps {
 
 export default function Lobby({
   initialGame,
-  initialSession,
+  // initialSession,
   initialPlayers,
 }: LobbyProps) {
   const [game] =
@@ -37,6 +37,51 @@ export default function Lobby({
 
   const [players, setPlayers] =
     useState(initialPlayers);
+  const [starting, setStarting] =
+    useState(false);
+
+  const handleStartGame =
+    async () => {
+      try {
+        setStarting(true);
+
+        const response =
+          await fetch(
+            `/api/games/${game.code}/start`,
+            {
+              method: "POST",
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            "Failed to start game"
+          );
+        }
+
+        /*
+         * We don't need to navigate.
+         *
+         * /game/[code] remains the
+         * same URL.
+         *
+         * The page will transition
+         * to the GameBoard when the
+         * new game state is fetched.
+         */
+
+      } catch (error) {
+        console.error(error);
+
+        // Add your toast here.
+      } finally {
+        setStarting(false);
+      }
+    };
 
   async function refreshLobby() {
     const response =
@@ -91,6 +136,16 @@ export default function Lobby({
               {game.code}
             </p>
           </div>
+          <button
+            type="button"
+            onClick={handleStartGame}
+            disabled={starting}
+            className="rounded-lg bg-black px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {starting
+              ? "Starting..."
+              : "Start Game"}
+          </button>
         </div>
 
         <div className="mt-8 grid gap-6 md:grid-cols-2">

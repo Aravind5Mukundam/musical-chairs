@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen ">
       <Header />
 
       <main className="mx-auto flex min-h-[calc(100vh-64px)] max-w-7xl items-center justify-center px-6">

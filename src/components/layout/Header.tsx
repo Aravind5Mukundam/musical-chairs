@@ -6,6 +6,7 @@ import {
 } from "@clerk/nextjs";
 
 import Link from "next/link";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   return (
@@ -19,6 +20,7 @@ export default function Header() {
         </Link>
 
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           <Show when="signed-out">
             <SignInButton>
               <button className="rounded-lg border px-4 py-2 text-sm">
