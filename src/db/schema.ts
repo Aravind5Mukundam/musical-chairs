@@ -6,6 +6,7 @@ import {
   timestamp,
   boolean,
   uniqueIndex,
+  type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
 /* ---------------------------------- */
@@ -105,7 +106,7 @@ export const gameSessions = pgTable(
     endedAt: timestamp("ended_at"),
   },
 
-  (table) => ({
+  (table: { gameId: AnyPgColumn; sessionNumber: AnyPgColumn }) => ({
     gameSessionUnique: uniqueIndex(
       "game_session_unique"
     ).on(

@@ -1,9 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import {
-  desc,
-  eq,
-} from "drizzle-orm";
+import { desc } from "drizzle-orm/sql/expressions/select";
+import { eq } from "drizzle-orm/sql/expressions/conditions";
 
 import { db } from "@/db";
 
@@ -450,7 +448,9 @@ export async function POST(
 
     const playerPositions =
       roundPlayers.map(
-        (roundPlayer) => {
+        (
+          roundPlayer: (typeof roundPlayers)[number]
+        ) => {
           const angle =
             normalizeAngle(
               roundPlayer.initialAngle +
@@ -496,7 +496,9 @@ export async function POST(
       chairAngles.map(
         (chairAngle) =>
           playerPositions.map(
-            (player) =>
+            (
+              player: (typeof playerPositions)[number]
+            ) =>
               angularDistance(
                 chairAngle,
                 player.currentAngle
@@ -558,7 +560,7 @@ export async function POST(
 
     const eliminatedPlayer =
       playerPositions.find(
-        (player) =>
+        (player: (typeof playerPositions)[number]) =>
           !assignedPlayerIds.has(
             player.playerId
           )
